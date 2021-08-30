@@ -1,25 +1,49 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export default function App() {
+  const [list, setList] = useState([]);
+  const [task, setTask] = useState('');
 
-export default App;
+  const addTask = () => {
+    setList([...list, task]);
+    setTask('');
+    document.getElementById('input-task').focus();
+  }
+
+  return (
+    <>
+      <header><h1>To Do List!</h1></header>
+      <main>
+        <form>
+          <label htmlFor="task">
+            Task:
+            <input
+              id="input-task"
+              onChange={({ target }) => setTask(target.value)}
+              type="text"
+              value={ task }
+            />
+          </label>
+          <button
+            onClick={ addTask }
+            type="button"
+          >
+            Add
+          </button>
+        </form>
+        <section>
+          {
+            list ? (
+              <ol>
+                {list.map((task) => <li>{ task }</li>)}
+              </ol>
+            )
+            : null
+          }
+        </section>
+      </main>
+      <footer><p>2021 | Desenvolvido por André Menezes</p></footer>
+    </>
+  );
+};
