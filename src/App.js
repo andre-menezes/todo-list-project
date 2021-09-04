@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './App.css';
+import CardTask from './components/CardTask';
+import { ToDoContext } from './context';
 
 export default function App() {
-  const [list, setList] = useState([]);
+  const { list, setList } = useContext(ToDoContext);
+  
   const [task, setTask] = useState('');
-
+  
   const addTask = () => {
     setList([...list, task]);
     setTask('');
@@ -31,13 +34,30 @@ export default function App() {
           >
             Add
           </button>
+          { list.length ? (
+            <button
+              onClick={ () => setList([]) }
+              type="button"
+            >
+              Clear List
+            </button>
+          ) : null }
         </form>
         <section>
           {
             list ? (
-              <ol>
-                {list.map((task) => <li>{ task }</li>)}
-              </ol>
+              <ul className="list">
+                {list.map((task, index) => (
+                  <CardTask
+                    currList={list}
+                    changeList={setList}
+                    key={task}
+                    task={task}
+                    index={index}
+                    last={list.length - 1}
+                  />
+                ))}
+              </ul>
             )
             : null
           }
